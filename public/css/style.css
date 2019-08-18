@@ -1,0 +1,8 @@
+.hover-filter:hover{
+    background: #dee2e6!important;
+}
+
+.selected-filter{
+    border: 1px solid #17a2b8!important;
+    background: #17a3b814!important;
+}

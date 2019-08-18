@@ -1,0 +1,19 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "Cosas por Hacer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fng-dev/todolist.git"
+  },
+  "author": "Franco Nascimento",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fng-dev/todolist/issues"
+  },
+  "homepage": "https://github.com/fng-dev/todolist#readme"
+}

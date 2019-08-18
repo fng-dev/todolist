@@ -1,0 +1,37 @@
+{
+  "tarjetas": [
+    {
+      "status": {
+        "status_id": 1,
+        "label": "Atrasado"
+      },
+      "vencimiento": "2019/08/13",
+      "creacion": "2019/08/18",
+      "label": "Exemplo Atrasada",
+      "keyword": "tarea",
+      "id": 1
+    },
+    {
+      "status": {
+        "status_id": 2,
+        "label": "Pendiente"
+      },
+      "vencimiento": "2019/08/23",
+      "creacion": "2019/08/18",
+      "label": "Exemplo Pendiente",
+      "keyword": "tarea",
+      "id": 2
+    },
+    {
+      "status": {
+        "status_id": 3,
+        "label": "Liberada"
+      },
+      "vencimiento": "2019/08/30",
+      "creacion": "2019/08/18",
+      "label": "Fra",
+      "keyword": "tarea",
+      "id": 3
+    }
+  ]
+}

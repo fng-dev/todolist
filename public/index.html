@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+  <title>Cosas por Hacer</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+  <link href="css/all.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <div class="container" id="app">
+
+    <div class="row">
+
+      <!-- BODY APPLICATION-->
+      <div class="col-12 border text-muted rounded mt-lg-5 mt-2 mb-5">
+
+        <!-- HEADER-->
+        <div class="row m-3">
+          <div class="col-12 col-lg-6 col-md-6 header-left">
+            <h3>Cosas Por Hacer</h3>
+          </div>
+          <div class="col-12 col-lg-6 col-md-6 header-right text-right dateTime">
+            {{data}}
+          </div>
+        </div>
+
+        <!-- MENU DE ACCIONS-->
+        <div class="row m-1">
+          <div class="col-8 col-lg-6 col-md-6 col-sm-6">
+            <button class="btn btn-outline-secondary btn-liberar">Liberar Selecionados</button>
+          </div>
+          <div class="col-3 col-lg-6 col-md-6 col-sm-6 text-right d-none d-md-block">
+
+            <button class="btn btn-outline-secondary add-tarea"><i class="fas fa-plus-circle"></i> Nueva</button>
+            <button class="btn btn-outline-secondary filtro-tarea"><i class="fas fa-filter"></i> Filtrar</button>
+            <button class="btn btn-outline-secondary ordenar-tarea"><i class="fas fa-sort"></i> Ordenar</button>
+
+          </div>
+          <div class="col-4 col-lg-6 col-md-6 col-sm-6 text-right d-md-none d-flex pt-2 text-center">
+            <i class="fas fa-plus-circle text-secondary add-tarea" style="font-size: 22px;flex:1;"></i>
+            <i class="fas fa-filter text-secondary filtro-tarea" style="font-size: 22px;flex: 1;"></i>
+            <i class="fas fa-sort text-secondary ordenar-tarea" style="font-size: 22px;flex: 1;"></i>
+          </div>
+        </div>
+
+        <!-- LOOP VUE TARJETAS -->
+
+        <tarjetas v-for="tarjeta in tarjetas" :id='tarjeta.id' :label='tarjeta.label' :status='tarjeta.status.status_id'
+          :vencimiento="tarjeta.vencimiento" :creacion="tarjeta.creacion"></tarjetas>
+
+
+        <!-- MODAL FILTROS -->
+
+        <div class="modal modal-filtro" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-muted">
+                <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Filtros</h5>
+              </div>
+              <div class="modal-body">
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="filter('all')" data-toggle="tooltip"
+                    data-placement="top" title="Mostrar Atrasados">
+                    <i class="fas fa-backspace text-primary"></i> Limpiar
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="filter('Atrasado')" data-toggle="tooltip"
+                    data-placement="top" title="Mostrar Atrasados">
+                    <i class="far fa-times-circle text-danger"></i> Atrasada
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="filter('Pendiente')" data-toggle="tooltip"
+                    data-placement="top" title="Mostrar Pendientes">
+                    <i class="far fa-clock text-info"></i> Pendiente
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="filter('Liberada')" data-toggle="tooltip"
+                    data-placement="top" title="Mostrar Liberados">
+                    <i class="far fa-check-circle text-success"></i> Liberada
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" data-toggle="tooltip"
+                    data-placement="top" title="Mostrar Liberados">
+                    <i class="far fa-calendar-alt text-warning"></i> Por Fecha
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>                
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- FINAL MODAL FILTRO-->
+
+        <!-- MODAL ORDER -->
+
+        <div class="modal modal-order" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header text-muted">
+                  <h5 class="modal-title"><i class="fas fa-sort"></i> Ordenar</h5>
+                </div>
+                <div class="modal-body">
+  
+                  <div class="row p-2 mb-2">
+                    <div class="col-12 p-3 border rounded hover-filter" @click="order('creacion,asc')" data-toggle="tooltip"
+                      data-placement="top" title="Mostrar Atrasados">
+                      <i class="fas fa-sort-amount-up-alt"></i> Según Creación Ascendente
+                    </div>
+                  </div>
+  
+                  <div class="row p-2 mb-2">
+                    <div class="col-12 p-3 border rounded hover-filter selected-filter" @click="order('creacion,desc')" data-toggle="tooltip"
+                      data-placement="top" title="Mostrar Atrasados">
+                      <i class="fas fa-sort-amount-down-alt"></i> Según Creación Descendente (Defecto)
+                    </div>
+                  </div>
+  
+                  <div class="row p-2 mb-2">
+                    <div class="col-12 p-3 border rounded hover-filter" @click="order('vencimiento,asc')" data-toggle="tooltip"
+                      data-placement="top" title="Mostrar Pendientes">
+                      <i class="fas fa-sort-numeric-up-alt"></i> Según Vencimiento Ascendente
+                    </div>
+                  </div>
+  
+                  <div class="row p-2 mb-2">
+                    <div class="col-12 p-3 border rounded hover-filter" @click="order('vencimiento,desc')" data-toggle="tooltip"
+                      data-placement="top" title="Mostrar Liberados">
+                      <i class="fas fa-sort-numeric-up-alt"></i> Según Vencimiento Descendente
+                    </div>
+                  </div>
+
+                  <div class="row p-2 mb-2">
+                      <div class="col-12 p-3 border rounded hover-filter" @click="order('status.status_id,asc')" data-toggle="tooltip"
+                        data-placement="top" title="Mostrar Atrasados">
+                        <i class="fas fa-sort-up"></i> Según Estado Ascendente
+                      </div>
+                    </div>
+    
+                    <div class="row p-2 mb-2">
+                      <div class="col-12 p-3 border rounded hover-filter" @click="order('status.status_id,desc')" data-toggle="tooltip"
+                        data-placement="top" title="Mostrar Atrasados">
+                        <i class="fas fa-sort-down"></i> Según Estado Descendente
+                      </div>
+                    </div>                    
+  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>                  
+                </div>
+  
+              </div>
+  
+            </div>
+            
+          </div>
+  
+          <!-- FINAL MODAL ORDER-->
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TEMPLATE VUEJS -->
+
+  <template id="tarjetas">
+    <div class="row m-3 tarjetas border rounded p-3" :class="checkStatus(status)" :style="bg">
+      <div class="col-12">
+
+        <div class="row p-3">
+          <div class="col-12">
+            <h5 class="text-muted">{{label}}</h5>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-5 d-none d-sm-block">
+            <input type="checkbox" :value="id" class="cb-tarjetas" name="cb-tarjetas[]" v-if="status == 3 ? false : true"> 
+            <span v-if="status == 3 ? false : true">Liberar Tarea</span>
+            <span v-if="status != 3 ? false : true"><h5 class="text-success">Tarea Liberada</h5></span>
+          </div>
+
+          <div class="col-1 d-sm-none d-md-none d-lg-none">
+            <input type="checkbox" :value="id" class="cb-tarjetas" name="cb-tarjetas[]" v-if="status == 3 ? false : true">
+          </div>
+
+          <div class="col-9 col-sm-6 col-md-6 col-lg-6 text-right">
+            <input type="text" class="form-control w-75 mr-1 d-inline bg-white" :value="dataFormat(vencimiento)"
+              readonly>
+            <i class="far fa-calendar-alt" style="font-size: 22px"></i>
+          </div>
+
+          <div class="col-1 pl-0 pt-1 pl-sm-3 pl-md-3 pl-lg-3">
+            <i :class="icon" style="font-size: 30px"></i>
+          </div>
+
+        </div>
+
+        <div class="row mx-0 p-0 mt-4">
+          <div class="col-12 text-lg-right text-center">
+            <button class="btn btn-outline-danger btn-sm btn-del" :id="id">
+              <i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline">Borrar</span>
+            </button>
+            <button class="btn btn-outline-info btn-sm btn-upd" :id="id">
+              <i class="fas fa-pencil-alt"></i> <span class="d-none d-sm-inline">Editar</span></span>
+            </button>
+            <button class="btn btn-outline-success btn-sm btn-clr" :id="id" v-if="status == 3 ? false : true">
+              <i class="far fa-check-circle"></i> <span class="d-none d-sm-inline">Liberar</span></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mx-0 mt-1 p-0">
+          <div class="col-12 text-center text-sm-left">Creado en {{dataFormat(creacion)}} </div>
+        </div>
+      </div>
+
+    </div>
+
+  </template>
+
+  <!-- FINAL TEMPLATE VUEJS-->
+
+
+
+  <!-- MODAL CONFIRMACION -->
+
+  <div class="modal modal-confirm" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-warning"></i> Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Estás seguro de que quieres continuar?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-outline-primary btn-ok">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL INFORMACION -->
+
+  <div class="modal modal-info" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-info-circle text-info"
+              style="vertical-align: middle; font-size:23px"></i> Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{text}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMACION NO BUTTON-->
+
+  <div class="modal modal-msg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-info-circle text-info"
+              style="vertical-align: middle; font-size:23px"></i> Info</h5>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL UPDATE -->
+
+  <div class="modal modal-update" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-muted">
+          <h5 class="modal-title"><i class="fas fa-pencil-alt"></i> Editar Tarea</h5>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-12">
+              <div class="alert alert-danger" style="display: none">Los campos en rojo son obligatorios...</div>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-12">
+              <label for="inp-label">Nombre:</label>
+              <input type="text" class="form-control inp-label">
+            </div>
+
+            <div class="col-12">
+              <label for="inp-vec">Vencimiento:</label>
+              <input type="text" class="form-control inp-venc datepicker bg-white" readonly>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-outline-primary btn-ok">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ANADIR NUEVA TAREA -->
+
+  <div class="modal modal-add" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-muted">
+          <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Nueva Tarea</h5>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-12">
+              <div class="alert alert-danger" style="display: none">Los campos en rojo son obligatorios...</div>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-12">
+              <label for="inp-label">Detalles:</label>
+              <input type="text" class="form-control inp-label" placeholder="Ingrese un nombre para la tarea">
+            </div>
+
+            <div class="col-12">
+              <label for="inp-vec">Vencimiento:</label>
+              <input type="text" class="form-control inp-venc datepicker bg-white"
+                placeholder="Ingresse una fecha de vencimiento" readonly>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-outline-primary btn-ok">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
+  <script src="js/vue.js"></script>
+  <script src="js/jqueryscripts.js"></script>
+
+
+</body>
+
+</html>
