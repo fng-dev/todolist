@@ -4,7 +4,8 @@
   
 # Instalacion  
 
-1. Instale json-server de forma global  
+1. Instale json-server de forma global    
+
 `npm install -g json-server`  
 
 2. Ejecute json-server desde el directorio raíz del proyecto com el comando en un console:   
