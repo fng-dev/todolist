@@ -53,6 +53,14 @@
           </div>
         </div>
 
+        <div class="row m-1 mt-4" v-if="showWarning">
+          <div class="col-12">
+            <div class="alert alert-danger">
+                No se encontró ninguna tarea.
+            </div>
+          </div>
+        </div>
+
         <!-- LOOP VUE TARJETAS -->
 
         <tarjetas v-for="tarjeta in tarjetas" :id='tarjeta.id' :label='tarjeta.label' :status='tarjeta.status.status_id'
@@ -98,15 +106,15 @@
                 </div>
 
                 <div class="row p-2 mb-2">
-                  <div class="col-12 p-3 border rounded hover-filter" data-toggle="tooltip"
+                  <div class="col-12 p-3 border rounded hover-filter by-fecha" data-toggle="tooltip"
                     data-placement="top" title="Mostrar Liberados">
-                    <i class="far fa-calendar-alt text-warning"></i> Por Fecha
+                    <i class="far fa-calendar-alt text-warning"></i> Por Fecha de Vencimiento
                   </div>
                 </div>
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>                
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
               </div>
 
             </div>
@@ -120,74 +128,109 @@
         <!-- MODAL ORDER -->
 
         <div class="modal modal-order" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header text-muted">
-                  <h5 class="modal-title"><i class="fas fa-sort"></i> Ordenar</h5>
-                </div>
-                <div class="modal-body">
-  
-                  <div class="row p-2 mb-2">
-                    <div class="col-12 p-3 border rounded hover-filter" @click="order('creacion,asc')" data-toggle="tooltip"
-                      data-placement="top" title="Mostrar Atrasados">
-                      <i class="fas fa-sort-amount-up-alt"></i> Según Creación Ascendente
-                    </div>
-                  </div>
-  
-                  <div class="row p-2 mb-2">
-                    <div class="col-12 p-3 border rounded hover-filter selected-filter" @click="order('creacion,desc')" data-toggle="tooltip"
-                      data-placement="top" title="Mostrar Atrasados">
-                      <i class="fas fa-sort-amount-down-alt"></i> Según Creación Descendente (Defecto)
-                    </div>
-                  </div>
-  
-                  <div class="row p-2 mb-2">
-                    <div class="col-12 p-3 border rounded hover-filter" @click="order('vencimiento,asc')" data-toggle="tooltip"
-                      data-placement="top" title="Mostrar Pendientes">
-                      <i class="fas fa-sort-numeric-up-alt"></i> Según Vencimiento Ascendente
-                    </div>
-                  </div>
-  
-                  <div class="row p-2 mb-2">
-                    <div class="col-12 p-3 border rounded hover-filter" @click="order('vencimiento,desc')" data-toggle="tooltip"
-                      data-placement="top" title="Mostrar Liberados">
-                      <i class="fas fa-sort-numeric-up-alt"></i> Según Vencimiento Descendente
-                    </div>
-                  </div>
-
-                  <div class="row p-2 mb-2">
-                      <div class="col-12 p-3 border rounded hover-filter" @click="order('status.status_id,asc')" data-toggle="tooltip"
-                        data-placement="top" title="Mostrar Atrasados">
-                        <i class="fas fa-sort-up"></i> Según Estado Ascendente
-                      </div>
-                    </div>
-    
-                    <div class="row p-2 mb-2">
-                      <div class="col-12 p-3 border rounded hover-filter" @click="order('status.status_id,desc')" data-toggle="tooltip"
-                        data-placement="top" title="Mostrar Atrasados">
-                        <i class="fas fa-sort-down"></i> Según Estado Descendente
-                      </div>
-                    </div>                    
-  
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>                  
-                </div>
-  
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-muted">
+                <h5 class="modal-title"><i class="fas fa-sort"></i> Ordenar</h5>
               </div>
-  
+              <div class="modal-body">
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="order('creacion,asc')"
+                    data-toggle="tooltip" data-placement="top" title="Mostrar Atrasados">
+                    <i class="fas fa-sort-amount-up-alt"></i> Según Creación Ascendente
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter selected-filter" @click="order('creacion,desc')"
+                    data-toggle="tooltip" data-placement="top" title="Mostrar Atrasados">
+                    <i class="fas fa-sort-amount-down-alt"></i> Según Creación Descendente (Defecto)
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="order('vencimiento,asc')"
+                    data-toggle="tooltip" data-placement="top" title="Mostrar Pendientes">
+                    <i class="fas fa-sort-numeric-up-alt"></i> Según Vencimiento Ascendente
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="order('vencimiento,desc')"
+                    data-toggle="tooltip" data-placement="top" title="Mostrar Liberados">
+                    <i class="fas fa-sort-numeric-up-alt"></i> Según Vencimiento Descendente
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="order('status.status_id,asc')"
+                    data-toggle="tooltip" data-placement="top" title="Mostrar Atrasados">
+                    <i class="fas fa-sort-up"></i> Según Estado Ascendente
+                  </div>
+                </div>
+
+                <div class="row p-2 mb-2">
+                  <div class="col-12 p-3 border rounded hover-filter" @click="order('status.status_id,desc')"
+                    data-toggle="tooltip" data-placement="top" title="Mostrar Atrasados">
+                    <i class="fas fa-sort-down"></i> Según Estado Descendente
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+              </div>
+
             </div>
-            
+
           </div>
-  
-          <!-- FINAL MODAL ORDER-->
+
+        </div>
+
+        <!-- FINAL MODAL ORDER-->
+
+        <!-- MODAL FILTER BY DATE-->
+
+        <div class="modal modal-filter-by-date" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-warning"></i> Confirmacion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="alert alert-danger" v-if="validateFecha">Favor informar la fecha...</div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label for="inp-vec">Vencimiento:</label>
+                  <input type="text" class="form-control inp-venc datepicker bg-white" readonly ref="filter">
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-outline-primary btn-ok" @click="filterDate()">Buscar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FINAL MODAL FILTER BY DATE-->
 
 
       </div>
 
     </div>
 
-  </div>
+  </div> <!-- FINAL DIV APP VUEJS-->
 
   <!-- TEMPLATE VUEJS -->
 
@@ -204,13 +247,17 @@
         <div class="row">
 
           <div class="col-5 d-none d-sm-block">
-            <input type="checkbox" :value="id" class="cb-tarjetas" name="cb-tarjetas[]" v-if="status == 3 ? false : true"> 
+            <input type="checkbox" :value="id" class="cb-tarjetas" name="cb-tarjetas[]"
+              v-if="status == 3 ? false : true">
             <span v-if="status == 3 ? false : true">Liberar Tarea</span>
-            <span v-if="status != 3 ? false : true"><h5 class="text-success">Tarea Liberada</h5></span>
+            <span v-if="status != 3 ? false : true">
+              <h5 class="text-success">Tarea Liberada</h5>
+            </span>
           </div>
 
           <div class="col-1 d-sm-none d-md-none d-lg-none">
-            <input type="checkbox" :value="id" class="cb-tarjetas" name="cb-tarjetas[]" v-if="status == 3 ? false : true">
+            <input type="checkbox" :value="id" class="cb-tarjetas" name="cb-tarjetas[]"
+              v-if="status == 3 ? false : true">
           </div>
 
           <div class="col-9 col-sm-6 col-md-6 col-lg-6 text-right">

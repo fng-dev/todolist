@@ -30,9 +30,7 @@ Vue.component('tarjetas', {
     }
   },
   watch: {
-    filtro: function () {
-      alert(filtro);
-    }
+
   },
 });
 
@@ -44,16 +42,64 @@ var app = new Vue({
     tarjetas: null,
     liberado: true,
     data: '',
+    showWarning: false,
+    validateFecha: false,
+
   },
   methods: {
 
+    filterDate: function () {
+
+      this.showWarning = false;
+
+      if (this.$refs.filter.value == "") {
+
+        this.validateFecha = true;
+
+        setTimeout(() => {
+          this.validateFecha = false;
+        }, 2000);
+        
+      } else {
+        var value = this.$refs.filter.value;
+        var dateEs = value.split('/');
+        var value = dateEs[2] + "/" + dateEs[1] + "/" + dateEs[0];
+
+        axios.get("http://localhost:3000/tarjetas?vencimiento=" + value, {})
+          .then(res => {
+
+            if (res.data.length == 0) {
+              this.showWarning = true;
+            }
+
+            this.tarjetas = res.data;
+            $('.modal').modal('hide');
+
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      }
+
+
+    },
+
     //funcion filter
     filter: function (value) {
+
+      this.showWarning = false;
+
       if (value == 'all') {
         axios.get("http://localhost:3000/tarjetas/?_sort=creacion,id&_order=desc,desc", {})
           .then(res => {
+
+            if (res.data.length == 0) {
+              this.showWarning = true;
+            }
+
             this.tarjetas = res.data;
             $('.modal').modal('hide');
+
           })
           .catch(err => {
             console.error(err);
@@ -61,6 +107,11 @@ var app = new Vue({
       } else {
         axios.get("http://localhost:3000/tarjetas?status.label=" + value, {})
           .then(res => {
+
+            if (res.data.length == 0) {
+              this.showWarning = true;
+            }
+
             this.tarjetas = res.data;
             $('.modal').modal('hide');
           })
@@ -73,13 +124,14 @@ var app = new Vue({
 
     //funcion order
     order: function (value) {
+      this.showWarning = false;
       var params = value.split(',');
       if (params[0] == 'creacion') {
         var url = "http://localhost:3000/tarjetas?_sort=" + params[0] + ",id&_order=" + params[1] + "," + params[1];
       } else {
         var url = "http://localhost:3000/tarjetas?_sort=" + params[0] + "&_order=" + params[1];
       }
-            
+
       axios.get(url, {})
         .then(res => {
           this.tarjetas = res.data;
@@ -94,8 +146,8 @@ var app = new Vue({
   },
   beforeMount() {
 
-    var month = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-    var week = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado'];
+    var month = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    var week = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
     var dateTime = new Date();
     this.data = week[dateTime.getDay()] + ", " + dateTime.getDate() + " de " + month[dateTime.getMonth()] + " de " + dateTime.getFullYear();
 

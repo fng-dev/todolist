@@ -13,10 +13,10 @@
     },
     {
       "status": {
-        "status_id": 3,
-        "label": "Liberada"
+        "status_id": 2,
+        "label": "Pendiente"
       },
-      "vencimiento": "2019/08/30",
+      "vencimiento": "2019/08/23",
       "creacion": "2019/08/18",
       "label": "Tarea Liberada",
       "keyword": "tarea",
@@ -32,6 +32,17 @@
       "label": "Tarea Atrasada",
       "keyword": "tarea",
       "id": 4
+    },
+    {
+      "status": {
+        "status_id": 1,
+        "label": "Atrasado"
+      },
+      "vencimiento": "2019/08/13",
+      "creacion": "2019/08/18",
+      "label": "Franco",
+      "keyword": "tarea",
+      "id": 5
     }
   ]
 }

@@ -291,21 +291,33 @@ $(document).ready(function () {
         }
     });
 
+    //LLAMANDO MODAL DE FILTROS
+
     $(document).on('click', '.filtro-tarea', function () {
 
         $('.modal-filtro').modal();
 
     });
 
+    //LLAMANDO MODAL DE ORDENACION
     $(document).on('click', '.ordenar-tarea', function () {
 
         $('.modal-order').modal();
 
     });
 
+    //ANADIR 'CLASS' EN LA ORDENACION SELECCIONADA
     $(document).on('click','.modal-order .hover-filter',function(){
+
         $('.modal-order .hover-filter').removeClass('selected-filter');
-        $(this).addClass('selected-filter')
+        $(this).addClass('selected-filter');
+
+    })
+
+    //ORDENACION POR LA FECHA DE VENCIMIENTO
+    $(document).on('click','.by-fecha', function(){
+        $('.modal').modal('hide');
+        $('.modal-filter-by-date').modal();
     })
 
 })
