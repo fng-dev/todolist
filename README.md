@@ -4,7 +4,7 @@
   
 # Instalacion  
 
-1. Instale json-server de forma global    
+1. Instalar json-server globalmente    
 
 `npm install -g json-server`  
 
