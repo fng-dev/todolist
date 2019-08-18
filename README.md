@@ -20,8 +20,4 @@ Si no se ejecuta en el puerto 3000, inicie el servidor con el siguiente comando:
 3. Para confirmar que todo salió como se esperaba, el servidor debe cargarse como 'Resources', la ruta "http://localhost:3000/tarjetas"  
   
     
-<<<<<<< HEAD
 4. Si todo salió bien, abra el navegador y vaya a "http://localhost:3000/"     
-=======
-4. Si todo salió bien, abra el navegador y vaya a "htpp://localhost:3000"    
->>>>>>> 967cf68206ecfc0611de5c9f959528456b6c1947
